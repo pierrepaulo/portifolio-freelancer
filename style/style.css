@@ -25,7 +25,7 @@ body {
 
 /* Logo */
 .logo img {
-  width: 120px;
+  width: 110px;
   height: auto;
 }
 
@@ -39,6 +39,7 @@ body {
   backdrop-filter: blur(10px);
   z-index: 1000;
   transition: all 0.3s ease;
+  padding-bottom: -20px;
 }
 
 .header.scrolled {
@@ -50,7 +51,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 20px;
+  padding: -200px 20px;
 }
 
 .logo a {
