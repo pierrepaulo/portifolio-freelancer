@@ -787,3 +787,311 @@ section {
   opacity: 1;
   transform: translateX(0);
 }
+
+/* Nova Hero Section - Split Screen Effect */
+.hero-new {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  margin-top: 0;
+}
+
+.hero-half {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-left {
+  background-image: url("../assets/images/designer-image.jpg");
+  background-color: #2c3e50; /* Cor de fallback */
+}
+
+.hero-right {
+  background-image: url("../assets/images/developer-image.jpg");
+  background-color: #34495e; /* Cor de fallback */
+}
+
+/* Overlay para melhor contraste do texto */
+.hero-half::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  transition: background 0.5s ease;
+  z-index: 1;
+}
+
+/* Estados de hover - expansão */
+.hero-new:hover .hero-half:not(:hover) {
+  width: 20%;
+}
+
+.hero-new:hover .hero-half:hover {
+  width: 80%;
+}
+
+/* Quando um lado está sendo hovereado */
+.hero-half:hover::before {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.hero-half:hover {
+  background-size: 110%;
+}
+
+/* Conteúdo da hero */
+.hero-content-new {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 2;
+  padding: 2rem;
+  opacity: 0.9;
+  transition: all 0.5s ease;
+}
+
+.hero-half:hover .hero-content-new {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.hero-title-new {
+  font-family: "Playfair Display", serif;
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  transition: all 0.5s ease;
+}
+
+.hero-half:hover .hero-title-new {
+  font-size: 4.5rem;
+}
+
+.hero-description-new {
+  font-size: 1.2rem;
+  font-weight: 300;
+  max-width: 500px;
+  margin: 0 auto;
+  opacity: 0.9;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  transition: all 0.5s ease;
+}
+
+/* Cores específicas para cada lado */
+.hero-left .hero-title-new {
+  color: #00bfff;
+}
+
+.hero-right .hero-title-new {
+  color: #ffd700;
+}
+
+/* Linha divisória no meio */
+.hero-new::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.3) 20%,
+    rgba(255, 255, 255, 0.3) 80%,
+    transparent
+  );
+  transform: translateX(-50%);
+  z-index: 3;
+  transition: opacity 0.5s ease;
+}
+
+/* Esconder a linha quando um lado está sendo hovereado */
+.hero-new:hover::after {
+  opacity: 0;
+}
+
+/* Efeito de brilho nas bordas */
+.hero-half::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.1) 30%,
+    rgba(255, 255, 255, 0.1) 70%,
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+}
+
+.hero-left::after {
+  right: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 191, 255, 0.3) 30%,
+    rgba(0, 191, 255, 0.3) 70%,
+    transparent
+  );
+}
+
+.hero-right::after {
+  left: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 215, 0, 0.3) 30%,
+    rgba(255, 215, 0, 0.3) 70%,
+    transparent
+  );
+}
+
+.hero-half:hover::after {
+  opacity: 1;
+}
+
+/* Animações de entrada */
+@keyframes slideInSplit {
+  from {
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.9;
+  }
+}
+
+.hero-content-new {
+  animation: slideInSplit 1s ease-out 0.5s both;
+}
+
+/* Efeito de zoom sutil na imagem */
+.hero-half {
+  background-size: cover;
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hero-half:hover {
+  background-size: 110%;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+  .hero-new {
+    flex-direction: column;
+  }
+
+  .hero-half {
+    width: 100% !important;
+    height: 50%;
+    transition: height 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .hero-new:hover .hero-half:not(:hover) {
+    height: 20%;
+    width: 100%;
+  }
+
+  .hero-new:hover .hero-half:hover {
+    height: 80%;
+    width: 100%;
+  }
+
+  .hero-title-new {
+    font-size: 2.5rem;
+  }
+
+  .hero-half:hover .hero-title-new {
+    font-size: 3rem;
+  }
+
+  .hero-description-new {
+    font-size: 1rem;
+    padding: 0 20px;
+  }
+
+  /* Linha divisória horizontal para mobile */
+  .hero-new::after {
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    transform: translateY(-50%);
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.3) 20%,
+      rgba(255, 255, 255, 0.3) 80%,
+      transparent
+    );
+  }
+
+  .hero-half::after {
+    width: 100%;
+    height: 4px;
+  }
+
+  .hero-left::after {
+    bottom: 0;
+    right: auto;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(0, 191, 255, 0.3) 30%,
+      rgba(0, 191, 255, 0.3) 70%,
+      transparent
+    );
+  }
+
+  .hero-right::after {
+    top: 0;
+    left: auto;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 215, 0, 0.3) 30%,
+      rgba(255, 215, 0, 0.3) 70%,
+      transparent
+    );
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title-new {
+    font-size: 2rem;
+  }
+
+  .hero-half:hover .hero-title-new {
+    font-size: 2.2rem;
+  }
+
+  .hero-description-new {
+    font-size: 0.9rem;
+  }
+
+  .hero-content-new {
+    padding: 1rem;
+  }
+}

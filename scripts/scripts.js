@@ -347,3 +347,228 @@ document.addEventListener("DOMContentLoaded", function () {
 
   console.log("Portfolio Pierre Paulo - JavaScript loaded successfully!");
 });
+
+// Hero Section Split Screen Interactive Script
+document.addEventListener("DOMContentLoaded", function () {
+  const heroSection = document.querySelector(".hero-new");
+  const heroLeft = document.querySelector(".hero-left");
+  const heroRight = document.querySelector(".hero-right");
+
+  if (!heroSection || !heroLeft || !heroRight) {
+    console.warn("Hero section elements not found");
+    return;
+  }
+
+  let isDesktop = window.innerWidth > 768;
+  let mobileTimeout;
+
+  // Função para detectar se é desktop
+  function checkDevice() {
+    isDesktop = window.innerWidth > 768;
+  }
+
+  // Função para ativar o lado esquerdo (mobile)
+  function activateLeft() {
+    heroSection.classList.remove("right-active");
+    heroSection.classList.add("left-active");
+    resetMobileTimeout();
+  }
+
+  // Função para ativar o lado direito (mobile)
+  function activateRight() {
+    heroSection.classList.remove("left-active");
+    heroSection.classList.add("right-active");
+    resetMobileTimeout();
+  }
+
+  // Função para resetar o estado (mobile)
+  function resetState() {
+    heroSection.classList.remove("left-active", "right-active");
+  }
+
+  // Reset timeout para mobile
+  function resetMobileTimeout() {
+    clearTimeout(mobileTimeout);
+    mobileTimeout = setTimeout(resetState, 3000);
+  }
+
+  // Event listeners para mobile (toque)
+  function addMobileListeners() {
+    heroLeft.addEventListener("click", activateLeft);
+    heroRight.addEventListener("click", activateRight);
+
+    // Touch events para melhor experiência mobile
+    heroLeft.addEventListener("touchstart", activateLeft);
+    heroRight.addEventListener("touchstart", activateRight);
+  }
+
+  // Remover todos os listeners
+  function removeAllListeners() {
+    heroLeft.removeEventListener("click", activateLeft);
+    heroRight.removeEventListener("click", activateRight);
+    heroLeft.removeEventListener("touchstart", activateLeft);
+    heroRight.removeEventListener("touchstart", activateRight);
+  }
+
+  // Efeitos adicionais para desktop
+  function addDesktopEffects() {
+    const heroHalves = [heroLeft, heroRight];
+
+    heroHalves.forEach((half) => {
+      // Efeito de zoom sutil na imagem
+      half.addEventListener("mouseenter", function () {
+        this.style.backgroundSize = "110%";
+      });
+
+      half.addEventListener("mouseleave", function () {
+        this.style.backgroundSize = "cover";
+      });
+
+      // Efeito de movimento do mouse
+      half.addEventListener("mousemove", function (e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = (y - centerY) / 50;
+        const rotateY = (centerX - x) / 50;
+
+        const content = this.querySelector(".hero-content-new");
+        if (content) {
+          content.style.transform = `translate(-50%, -50%) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        }
+      });
+
+      half.addEventListener("mouseleave", function () {
+        const content = this.querySelector(".hero-content-new");
+        if (content) {
+          content.style.transform =
+            "translate(-50%, -50%) perspective(1000px) rotateX(0deg) rotateY(0deg)";
+        }
+      });
+    });
+  }
+
+  // Inicializar baseado no dispositivo
+  function initializeHero() {
+    removeAllListeners();
+    checkDevice();
+
+    if (isDesktop) {
+      addDesktopEffects();
+      resetState(); // Remove classes mobile se existirem
+    } else {
+      addMobileListeners();
+    }
+  }
+
+  // Inicializar
+  initializeHero();
+
+  // Reinicializar quando a janela for redimensionada
+  let resizeTimeout;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimeout);
+    clearTimeout(mobileTimeout);
+    resizeTimeout = setTimeout(function () {
+      resetState();
+      initializeHero();
+    }, 250);
+  });
+
+  // Efeito de parallax no scroll (opcional e sutil)
+  let ticking = false;
+  function updateParallax() {
+    const scrolled = window.pageYOffset;
+
+    if (scrolled < window.innerHeight) {
+      const rate = scrolled * 0.3;
+      heroLeft.style.transform = `translateY(${rate}px)`;
+      heroRight.style.transform = `translateY(${rate}px)`;
+    }
+
+    ticking = false;
+  }
+
+  function requestParallaxTick() {
+    if (!ticking && isDesktop) {
+      requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener("scroll", requestParallaxTick);
+
+  // Animação de entrada suave
+  setTimeout(function () {
+    heroSection.style.opacity = "1";
+    heroSection.classList.add("loaded");
+  }, 100);
+
+  // Preloader para as imagens
+  function preloadImages() {
+    const images = [
+      "../assets/images/designer-image.jpg",
+      "../assets/images/developer-image.jpg",
+    ];
+
+    let loadedImages = 0;
+    const totalImages = images.length;
+
+    images.forEach(function (src) {
+      const img = new Image();
+      img.onload = function () {
+        loadedImages++;
+        if (loadedImages === totalImages) {
+          heroSection.classList.add("images-loaded");
+        }
+      };
+      img.src = src;
+    });
+  }
+
+  // Iniciar preload
+  preloadImages();
+
+  // Debug info
+  console.log("Hero Split Screen initialized successfully!");
+  console.log("Device type:", isDesktop ? "Desktop" : "Mobile");
+});
+
+// Função para adicionar CSS dinâmico (caso necessário)
+function addDynamicStyles() {
+  const style = document.createElement("style");
+  style.textContent = `
+    .hero-new {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    
+    .hero-new.loaded {
+      opacity: 1;
+    }
+    
+    .hero-new.images-loaded .hero-half {
+      background-size: cover;
+    }
+    
+    /* Smooth transitions para todos os estados */
+    .hero-half,
+    .hero-content-new,
+    .hero-title-new,
+    .hero-description-new {
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Adicionar estilos dinâmicos quando o DOM estiver pronto
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", addDynamicStyles);
+} else {
+  addDynamicStyles();
+}
