@@ -6,6 +6,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const navLinks = document.querySelectorAll(".nav-link");
   const header = document.getElementById("header");
 
+  // Ajuste layout hero section
+  const heroNew = document.querySelector(".hero-new");
+  const heroLeft = document.querySelector(".hero-left");
+  const heroRight = document.querySelector(".hero-right");
+
+  if (heroNew && heroLeft && heroRight && window.innerWidth > 768) {
+    heroNew.addEventListener("mousemove", (e) => {
+      const { left, width } = heroNew.getBoundingClientRect();
+      const mouseX = e.clientX - left;
+      const percentage = mouseX / width;
+
+      const leftWidthPct = (1 - percentage) * 100;
+      const rightWidthPct = percentage * 100;
+
+      heroLeft.style.width = `${leftWidthPct}%`;
+      heroRight.style.width = `${rightWidthPct}%`;
+    });
+
+    heroNew.addEventListener("mouseleave", () => {
+      heroLeft.style.width = "50%";
+      heroRight.style.width = "50%";
+    });
+  }
+
   // Mobile Menu Toggle
   hamburger.addEventListener("click", function () {
     hamburger.classList.toggle("active");
@@ -415,15 +439,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const heroHalves = [heroLeft, heroRight];
 
     heroHalves.forEach((half) => {
-      // Efeito de zoom sutil na imagem
-      half.addEventListener("mouseenter", function () {
-        this.style.backgroundSize = "110%";
-      });
-
-      half.addEventListener("mouseleave", function () {
-        this.style.backgroundSize = "cover";
-      });
-
       // Efeito de movimento do mouse
       half.addEventListener("mousemove", function (e) {
         const rect = this.getBoundingClientRect();
