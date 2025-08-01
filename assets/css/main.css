@@ -255,7 +255,7 @@ section {
 
 .about-skills {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
 }
 
@@ -603,91 +603,7 @@ section {
     font-size: 1.5rem;
   }
 
-  /* Hero Split Mobile */
-  .hero-split {
-    height: 100vh;
-  }
-
-  .split-container {
-    flex-direction: column;
-  }
-
-  .split-side {
-    position: relative; /* Ajuste para mobile */
-    width: 100% !important;
-    height: 50%;
-    transition: height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .split-left {
-    background-position: center bottom; /* Ajuste para mobile */
-  }
-
-  .split-right {
-    background-position: center top; /* Ajuste para mobile */
-  }
-
-  .split-container:hover .split-side:not(:hover) {
-    height: 30%;
-  }
-
-  .split-container:hover .split-side:hover {
-    height: 70%;
-  }
-
-  .split-container::after {
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    transform: translateY(-50%);
-  }
-
-  .split-side::before {
-    width: 100%;
-    height: 4px;
-    top: auto;
-  }
-
-  .split-left::before {
-    bottom: 0;
-    right: auto;
-    background: linear-gradient(
-      to right,
-      transparent,
-      rgba(0, 191, 255, 0.6) 30%,
-      rgba(0, 191, 255, 0.6) 70%,
-      transparent
-    );
-  }
-
-  .split-right::before {
-    top: 0;
-    left: auto;
-    background: linear-gradient(
-      to right,
-      transparent,
-      rgba(255, 215, 0, 0.6) 30%,
-      rgba(255, 215, 0, 0.6) 70%,
-      transparent
-    );
-  }
-
-  .split-title {
-    font-size: 2.5rem;
-  }
-
-  .split-side:hover .split-title {
-    font-size: 3rem;
-  }
-
-  .split-description {
-    font-size: 1.1rem;
-  }
-
-  .split-side:hover .split-description {
-    font-size: 1.2rem;
-  }
+  /* Hero Mobile */
 
   .section-title {
     font-size: 2.5rem;
@@ -703,11 +619,11 @@ section {
   }
 
   .projects-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .services-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .footer-content {
@@ -720,18 +636,6 @@ section {
 @media (max-width: 480px) {
   .container {
     padding: 0 15px;
-  }
-
-  .split-title {
-    font-size: 2rem;
-  }
-
-  .split-side:hover .split-title {
-    font-size: 2.3rem;
-  }
-
-  .split-description {
-    font-size: 1rem;
   }
 
   .section-title {
