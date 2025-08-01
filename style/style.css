@@ -144,40 +144,23 @@ body {
 }
 /*
   Hero Section - Frases e Foto
-  A nova seção hero exibe apenas as frases com efeito de digitação ao lado de
-  uma foto. A estrutura utiliza flexbox para alinhar verticalmente o texto e
-  a imagem de forma responsiva e centralizada. */
+  */
 
 .hero {
   background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-  /* Espaçamento interno maior no topo e base para criar respiro visual.
-     O valor superior compensa o cabeçalho fixo para evitar que o conteúdo
-     fique escondido atrás dele. */
-  padding: 80px 0;
-  /* Garante que a área do hero ocupe boa parte da tela, deixando o
-     conteúdo centralizado verticalmente no viewport. Ajuste conforme
-     necessário para balancear com o restante da página. */
-  min-height: 60vh;
-
-  /* Usa flexbox para centralizar verticalmente o conteúdo interno (.hero-container).
-     A direção padrão (column) é suficiente pois há apenas um filho direto. */
+  padding-top: 140px;
+  min-height: 80vh;
+  padding-bottom: 80px;
   display: flex;
   align-items: center;
 }
 
 .hero-container {
-  /* Utiliza flexbox para alinhar o texto e a foto horizontalmente.
-     O `flex-wrap` garante que em telas menores os elementos quebrem para
-     a linha seguinte de forma elegante. */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  /* Centraliza as colunas horizontalmente e distribui o espaço de forma equilibrada */
   justify-content: center;
   gap: 4rem;
-  /* Centraliza verticalmente o container dentro da seção hero usando
-     margens automáticas no eixo vertical. Isso posiciona o conteúdo
-     no centro, independentemente da altura da área disponível. */
   margin-top: auto;
   margin-bottom: auto;
 }
@@ -190,10 +173,7 @@ body {
   line-height: 1.4;
   font-weight: 700;
   letter-spacing: 1px;
-  /* Permite quebras de linha conforme definidas nas frases do JS */
   white-space: pre-line;
-  /* Limita a largura máxima para melhor equilíbrio visual sem forçar ocupação
-     completa do espaço disponível. */
   max-width: 600px;
 }
 
@@ -204,7 +184,6 @@ body {
   height: auto;
   border-radius: 0;
   box-shadow: none;
-  /* Remove a flexibilidade para que a foto ocupe apenas seu tamanho natural */
 }
 
 /* Colunas do hero: centraliza conteúdo e define proporções */
@@ -219,11 +198,9 @@ body {
   .hero-container {
     flex-direction: column-reverse;
     gap: 2rem;
-    /* Remove a altura mínima em dispositivos móveis para se ajustar ao conteúdo */
     min-height: auto;
   }
   .typing-text {
-    /* Ajuste da fonte para telas menores */
     font-size: 1.5rem;
     text-align: center;
   }
