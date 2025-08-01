@@ -1,4 +1,11 @@
 /* Reset e configurações globais */
+:root {
+  --color-primary: #00bfff;
+  --color-secondary: #ffd700;
+  --color-text: #f0f0f0;
+  --color-bg: #1a1a1a;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -51,7 +58,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: -200px 20px;
+  padding: 0 20px;
 }
 
 .logo a {
@@ -134,159 +141,190 @@ body {
   transform: rotate(-45deg) translate(6px, -6px);
 }
 
-/* Hero Section */
-.hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Hero Section - Split Screen Interactive */
+.hero-split {
+  height: 100vh;
   position: relative;
   overflow: hidden;
 }
 
-.hero-background {
+.split-container {
+  display: flex;
+  height: 100%;
+  position: relative;
+}
+
+.split-side {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: 100% 100%; /* Garante que a imagem não mude de tamanho */
+  background-repeat: no-repeat;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.split-left {
+  left: 0;
+  background-image: linear-gradient(
+      135deg,
+      rgba(0, 191, 255, 0.8) 0%,
+      rgba(0, 191, 255, 0.4) 100%
+    ),
+    url("../assets/images/designer-image.jpg");
+  background-position: right center; /* Mostra a metade direita da imagem esquerda */
+  background-color: #1a1a2e;
+}
+
+.split-right {
+  right: 0;
+  background-image: linear-gradient(
+      135deg,
+      rgba(255, 215, 0, 0.8) 0%,
+      rgba(255, 215, 0, 0.4) 100%
+    ),
+    url("../assets/images/developer-image.jpg");
+  background-position: left center; /* Mostra a metade esquerda da imagem direita */
+  background-color: #2e1a1a;
+}
+
+/* Overlay para melhor contraste */
+.split-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.8s ease;
+  z-index: 1;
 }
 
-.hero-shapes {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.shape {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.1;
-  animation: float 6s ease-in-out infinite;
-}
-
-.shape-1 {
-  width: 300px;
-  height: 300px;
-  background: linear-gradient(45deg, #00bfff, #ffd700);
-  top: 10%;
-  left: 10%;
-  animation-delay: 0s;
-}
-
-.shape-2 {
-  width: 200px;
-  height: 200px;
-  background: linear-gradient(45deg, #ffd700, #00bfff);
-  top: 60%;
-  right: 15%;
-  animation-delay: 2s;
-}
-
-.shape-3 {
-  width: 150px;
-  height: 150px;
-  background: linear-gradient(45deg, #00bfff, #ffd700);
-  bottom: 20%;
-  left: 60%;
-  animation-delay: 4s;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-20px) rotate(180deg);
-  }
-}
-
-.hero-content {
-  text-align: center;
-  z-index: 2;
+/* Conteúdo do split */
+.split-content {
   position: relative;
-  animation: fadeInUp 1s ease-out;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  margin: 0 5%; /* Margem lateral para centralizar com o resto do site */
+  transform: translateY(0);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.hero-name {
+.split-title {
   font-family: "Playfair Display", serif;
   font-size: 4rem;
   font-weight: 700;
-  color: #00bfff;
-  margin-bottom: 1rem;
-  animation: fadeInUp 1s ease-out 0.2s both;
-}
-
-.hero-title {
-  font-size: 2rem;
-  font-weight: 300;
-  color: #f0f0f0;
   margin-bottom: 1.5rem;
-  animation: fadeInUp 1s ease-out 0.4s both;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  transition: all 0.8s ease;
 }
 
-.hero-description {
-  font-size: 1.2rem;
-  color: #cccccc;
-  margin-bottom: 2.5rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  animation: fadeInUp 1s ease-out 0.6s both;
+.split-left .split-title {
+  color: #00bfff;
 }
 
-.hero-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: linear-gradient(45deg, #00bfff, #ffd700);
-  color: #1a1a1a;
-  padding: 15px 30px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  animation: fadeInUp 1s ease-out 0.8s both;
-  box-shadow: 0 5px 15px rgba(0, 191, 255, 0.3);
+.split-right .split-title {
+  color: #ffd700;
 }
 
-.hero-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 191, 255, 0.4);
+.split-description {
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: #ffffff;
+  max-width: 400px;
+  margin: 0 auto;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+  opacity: 0.9;
+  transition: all 0.8s ease;
 }
 
-.hero-btn i {
-  animation: bounce 2s infinite;
+/* Efeito de cobertura: a imagem ativa se sobrepõe à outra */
+.split-side.active {
+  z-index: 10; /* Garante que a imagem ativa fique por cima */
 }
 
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-5px);
-  }
-  60% {
-    transform: translateY(-3px);
-  }
+/* Linha divisória central */
+.split-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.3) 20%,
+    rgba(255, 255, 255, 0.3) 80%,
+    transparent
+  );
+  transform: translateX(-50%);
+  z-index: 3;
+  transition: opacity 0.8s ease;
 }
 
-@keyframes fadeInUp {
+.split-container:hover::after {
+  opacity: 0;
+}
+
+/* Efeito de brilho nas bordas */
+.split-side::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: 2;
+}
+
+.split-left::before {
+  right: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 191, 255, 0.6) 30%,
+    rgba(0, 191, 255, 0.6) 70%,
+    transparent
+  );
+}
+
+.split-right::before {
+  left: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 215, 0, 0.6) 30%,
+    rgba(255, 215, 0, 0.6) 70%,
+    transparent
+  );
+}
+
+.split-side:hover::before {
+  opacity: 1;
+}
+
+/* Animação de entrada */
+@keyframes fadeInSplit {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1);
   }
+}
+
+.hero-split {
+  animation: fadeInSplit 1.2s ease-out;
 }
 
 /* Sections */
@@ -303,7 +341,7 @@ section {
   font-family: "Playfair Display", serif;
   font-size: 3rem;
   font-weight: 700;
-  color: #00bfff;
+  color: var(--color-primary);
   margin-bottom: 1rem;
 }
 
@@ -683,16 +721,90 @@ section {
     font-size: 1.5rem;
   }
 
-  .hero-name {
+  /* Hero Split Mobile */
+  .hero-split {
+    height: 100vh;
+  }
+
+  .split-container {
+    flex-direction: column;
+  }
+
+  .split-side {
+    position: relative; /* Ajuste para mobile */
+    width: 100% !important;
+    height: 50%;
+    transition: height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .split-left {
+    background-position: center bottom; /* Ajuste para mobile */
+  }
+
+  .split-right {
+    background-position: center top; /* Ajuste para mobile */
+  }
+
+  .split-container:hover .split-side:not(:hover) {
+    height: 30%;
+  }
+
+  .split-container:hover .split-side:hover {
+    height: 70%;
+  }
+
+  .split-container::after {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: translateY(-50%);
+  }
+
+  .split-side::before {
+    width: 100%;
+    height: 4px;
+    top: auto;
+  }
+
+  .split-left::before {
+    bottom: 0;
+    right: auto;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(0, 191, 255, 0.6) 30%,
+      rgba(0, 191, 255, 0.6) 70%,
+      transparent
+    );
+  }
+
+  .split-right::before {
+    top: 0;
+    left: auto;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 215, 0, 0.6) 30%,
+      rgba(255, 215, 0, 0.6) 70%,
+      transparent
+    );
+  }
+
+  .split-title {
     font-size: 2.5rem;
   }
 
-  .hero-title {
-    font-size: 1.5rem;
+  .split-side:hover .split-title {
+    font-size: 3rem;
   }
 
-  .hero-description {
-    font-size: 1rem;
+  .split-description {
+    font-size: 1.1rem;
+  }
+
+  .split-side:hover .split-description {
+    font-size: 1.2rem;
   }
 
   .section-title {
@@ -728,12 +840,16 @@ section {
     padding: 0 15px;
   }
 
-  .hero-name {
+  .split-title {
     font-size: 2rem;
   }
 
-  .hero-title {
-    font-size: 1.2rem;
+  .split-side:hover .split-title {
+    font-size: 2.3rem;
+  }
+
+  .split-description {
+    font-size: 1rem;
   }
 
   .section-title {
@@ -786,324 +902,4 @@ section {
 .slide-right.visible {
   opacity: 1;
   transform: translateX(0);
-}
-
-/* Nova Hero Section - Split Screen Effect */
-.hero-new {
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  height: 500px;
-}
-
-.hero-half {
-  position: relative;
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: pointer;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.hero-left,
-.hero-right {
-  position: relative;
-  background-size: cover;
-  background-position: center;
-  transition: width 0.5s ease;
-}
-
-.hero-left {
-  width: 50%;
-  background-image: url("../assets/images/designer-image.jpg");
-  background-color: #2c3e50;
-}
-
-.hero-right {
-  width: 50%;
-  background-image: url("../assets/images/developer-image.jpg");
-  background-color: #34495e;
-}
-
-/* Overlay para melhor contraste do texto */
-.hero-half::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  transition: width 0.3s ease; /* suaviza animação */
-  z-index: 1;
-}
-
-/* Estados de hover - expansão */
-.hero-new:hover .hero-half:not(:hover) {
-  width: 20%;
-}
-
-.hero-new:hover .hero-half:hover {
-  width: 80%;
-}
-
-/* Quando um lado está sendo hovereado */
-.hero-half:hover::before {
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.hero-half,
-.hero-half:hover {
-  background-size: cover !important;
-  transition: none !important;
-}
-
-/* Conteúdo da hero */
-.hero-content-new {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  z-index: 2;
-  padding: 2rem;
-  opacity: 0.9;
-  transition: all 0.5s ease;
-}
-
-.hero-half:hover .hero-content-new {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1.05);
-}
-
-.hero-title-new {
-  font-family: "Playfair Display", serif;
-  font-size: 4rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  transition: all 0.5s ease;
-}
-
-.hero-half:hover .hero-title-new {
-  font-size: 4.5rem;
-}
-
-.hero-description-new {
-  font-size: 1.2rem;
-  font-weight: 300;
-  max-width: 500px;
-  margin: 0 auto;
-  opacity: 0.9;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-  transition: all 0.5s ease;
-}
-
-/* Cores específicas para cada lado */
-.hero-left .hero-title-new {
-  color: #00bfff;
-}
-
-.hero-right .hero-title-new {
-  color: #ffd700;
-}
-
-/* Linha divisória no meio */
-.hero-new::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(255, 255, 255, 0.3) 20%,
-    rgba(255, 255, 255, 0.3) 80%,
-    transparent
-  );
-  transform: translateX(-50%);
-  z-index: 3;
-  transition: opacity 0.5s ease;
-}
-
-/* Esconder a linha quando um lado está sendo hovereado */
-.hero-new:hover::after {
-  opacity: 0;
-}
-
-/* Efeito de brilho nas bordas */
-.hero-half::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(255, 255, 255, 0.1) 30%,
-    rgba(255, 255, 255, 0.1) 70%,
-    transparent
-  );
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: 2;
-}
-
-.hero-left::after {
-  right: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(0, 191, 255, 0.3) 30%,
-    rgba(0, 191, 255, 0.3) 70%,
-    transparent
-  );
-}
-
-.hero-right::after {
-  left: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(255, 215, 0, 0.3) 30%,
-    rgba(255, 215, 0, 0.3) 70%,
-    transparent
-  );
-}
-
-.hero-half:hover::after {
-  opacity: 1;
-}
-
-/* Animações de entrada */
-@keyframes slideInSplit {
-  from {
-    transform: translate(-50%, -50%) scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.9;
-  }
-}
-
-.hero-content-new {
-  animation: slideInSplit 1s ease-out 0.5s both;
-}
-
-/* Efeito de zoom sutil na imagem */
-.hero-half {
-  background-size: cover;
-  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.hero-half:hover {
-  background-size: 110%;
-}
-
-/* Responsividade para mobile */
-@media (max-width: 768px) {
-  .hero-new {
-    flex-direction: column;
-  }
-
-  .hero-half {
-    width: 100% !important;
-    height: 50%;
-    transition: height 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .hero-new:hover .hero-half:not(:hover) {
-    height: 20%;
-    width: 100%;
-  }
-
-  .hero-new:hover .hero-half:hover {
-    height: 80%;
-    width: 100%;
-  }
-
-  .hero-title-new {
-    font-size: 2.5rem;
-  }
-
-  .hero-half:hover .hero-title-new {
-    font-size: 3rem;
-  }
-
-  .hero-description-new {
-    font-size: 1rem;
-    padding: 0 20px;
-  }
-
-  /* Linha divisória horizontal para mobile */
-  .hero-new::after {
-    left: 0;
-    top: 50%;
-    width: 100%;
-    height: 2px;
-    transform: translateY(-50%);
-    background: linear-gradient(
-      to right,
-      transparent,
-      rgba(255, 255, 255, 0.3) 20%,
-      rgba(255, 255, 255, 0.3) 80%,
-      transparent
-    );
-  }
-
-  .hero-half::after {
-    width: 100%;
-    height: 4px;
-  }
-
-  .hero-left::after {
-    bottom: 0;
-    right: auto;
-    background: linear-gradient(
-      to right,
-      transparent,
-      rgba(0, 191, 255, 0.3) 30%,
-      rgba(0, 191, 255, 0.3) 70%,
-      transparent
-    );
-  }
-
-  .hero-right::after {
-    top: 0;
-    left: auto;
-    background: linear-gradient(
-      to right,
-      transparent,
-      rgba(255, 215, 0, 0.3) 30%,
-      rgba(255, 215, 0, 0.3) 70%,
-      transparent
-    );
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-title-new {
-    font-size: 2rem;
-  }
-
-  .hero-half:hover .hero-title-new {
-    font-size: 2.2rem;
-  }
-
-  .hero-description-new {
-    font-size: 0.9rem;
-  }
-
-  .hero-content-new {
-    padding: 1rem;
-  }
 }

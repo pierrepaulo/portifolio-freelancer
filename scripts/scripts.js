@@ -6,37 +6,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const navLinks = document.querySelectorAll(".nav-link");
   const header = document.getElementById("header");
 
-  // Ajuste layout hero section
-  const heroNew = document.querySelector(".hero-new");
-  const heroLeft = document.querySelector(".hero-left");
-  const heroRight = document.querySelector(".hero-right");
-
-  if (heroNew && heroLeft && heroRight && window.innerWidth > 768) {
-    heroNew.addEventListener("mousemove", (e) => {
-      const { left, width } = heroNew.getBoundingClientRect();
-      const mouseX = e.clientX - left;
-      const percentage = mouseX / width;
-
-      const leftWidthPct = (1 - percentage) * 100;
-      const rightWidthPct = percentage * 100;
-
-      heroLeft.style.width = `${leftWidthPct}%`;
-      heroRight.style.width = `${rightWidthPct}%`;
-    });
-
-    heroNew.addEventListener("mouseleave", () => {
-      heroLeft.style.width = "50%";
-      heroRight.style.width = "50%";
-    });
-  }
-
   // Mobile Menu Toggle
   hamburger.addEventListener("click", function () {
-    hamburger.classList.toggle("active");
+    // alterna estado do menu
+    const isActive = hamburger.classList.toggle("active");
     nav.classList.toggle("active");
-    document.body.style.overflow = nav.classList.contains("active")
-      ? "hidden"
-      : "auto";
+    document.body.style.overflow = isActive ? "hidden" : "auto";
+    hamburger.setAttribute("aria-expanded", isActive);
   });
 
   // Close mobile menu when clicking on nav links
@@ -75,24 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-  // Hero button smooth scroll
-  const heroBtn = document.querySelector(".hero-btn");
-  if (heroBtn) {
-    heroBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      const targetSection = document.querySelector("#projects");
-      if (targetSection) {
-        const headerHeight = header.offsetHeight;
-        const targetPosition = targetSection.offsetTop - headerHeight;
-
-        window.scrollTo({
-          top: targetPosition,
-          behavior: "smooth",
-        });
-      }
-    });
-  }
 
   // Scroll animations
   const observerOptions = {
@@ -140,18 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
     observer.observe(card);
   });
 
-  // Parallax effect for hero shapes
-  window.addEventListener("scroll", function () {
-    const scrolled = window.pageYOffset;
-    const shapes = document.querySelectorAll(".shape");
-
-    shapes.forEach((shape, index) => {
-      const speed = 0.5 + index * 0.1;
-      const yPos = -(scrolled * speed);
-      shape.style.transform = `translateY(${yPos}px)`;
-    });
-  });
-
   // Active navigation link highlighting
   window.addEventListener("scroll", function () {
     const sections = document.querySelectorAll("section[id]");
@@ -172,33 +118,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Typing animation for hero title
-  function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = "";
-
-    function type() {
-      if (i < text.length) {
-        element.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(type, speed);
-      }
-    }
-
-    type();
-  }
-
-  // Initialize typing animation after a delay
-  setTimeout(() => {
-    const heroTitle = document.querySelector(".hero-title");
-    if (heroTitle) {
-      const originalText = heroTitle.textContent;
-      typeWriter(heroTitle, originalText, 80);
-    }
-  }, 1500);
-
   // Button hover effects
-  const buttons = document.querySelectorAll(".hero-btn, .whatsapp-btn");
+  const buttons = document.querySelectorAll(".whatsapp-btn");
   buttons.forEach((button) => {
     button.addEventListener("mouseenter", function () {
       this.style.transform = "translateY(-3px) scale(1.02)";
@@ -267,17 +188,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Loading animation
   window.addEventListener("load", function () {
     document.body.classList.add("loaded");
-
-    // Trigger hero animations
-    const heroElements = document.querySelectorAll(
-      ".hero-name, .hero-title, .hero-description, .hero-btn"
-    );
-    heroElements.forEach((element, index) => {
-      setTimeout(() => {
-        element.style.opacity = "1";
-        element.style.transform = "translateY(0)";
-      }, index * 200);
-    });
   });
 
   // Scroll to top functionality
@@ -335,82 +245,134 @@ document.addEventListener("DOMContentLoaded", function () {
     this.style.boxShadow = "0 5px 15px rgba(0, 191, 255, 0.3)";
   });
 
-  // Performance optimization: Throttle scroll events
-  let ticking = false;
-
-  function updateScrollEffects() {
-    // Header scroll effect
-    if (window.scrollY > 100) {
-      header.classList.add("scrolled");
-    } else {
-      header.classList.remove("scrolled");
-    }
-
-    // Parallax effect
-    const scrolled = window.pageYOffset;
-    const shapes = document.querySelectorAll(".shape");
-
-    shapes.forEach((shape, index) => {
-      const speed = 0.5 + index * 0.1;
-      const yPos = -(scrolled * speed);
-      shape.style.transform = `translateY(${yPos}px)`;
-    });
-
-    ticking = false;
-  }
-
-  function requestTick() {
-    if (!ticking) {
-      requestAnimationFrame(updateScrollEffects);
-      ticking = true;
-    }
-  }
-
-  // Replace the existing scroll event listeners with throttled version
-  window.addEventListener("scroll", requestTick);
-
   console.log("Portfolio Pierre Paulo - JavaScript loaded successfully!");
 });
 
-// Hero Section Split Screen Interactive Script
+// ===== HERO SPLIT SCREEN INTERACTIVE EFFECT =====
 document.addEventListener("DOMContentLoaded", function () {
-  const heroSection = document.querySelector(".hero-new");
-  const heroLeft = document.querySelector(".hero-left");
-  const heroRight = document.querySelector(".hero-right");
+  const splitContainer = document.querySelector(".split-container");
+  const splitLeft = document.querySelector(".split-left");
+  const splitRight = document.querySelector(".split-right");
 
-  if (!heroSection || !heroLeft || !heroRight) {
-    console.warn("Hero section elements not found");
+  if (!splitContainer || !splitLeft || !splitRight) {
+    console.warn("Split screen elements not found");
     return;
   }
 
   let isDesktop = window.innerWidth > 768;
-  let mobileTimeout;
+  let currentMouseX = 0;
+  let targetMouseX = 0;
+  let animationId = null;
 
   // Função para detectar se é desktop
   function checkDevice() {
     isDesktop = window.innerWidth > 768;
   }
 
+  // Função de interpolação suave (lerp)
+  function lerp(start, end, factor) {
+    return start + (end - start) * factor;
+  }
+
+  // Função para animar as transições suavemente
+  function animateTransition() {
+    // Interpolação suave para o movimento do mouse
+    currentMouseX = lerp(currentMouseX, targetMouseX, 0.08);
+
+    // Calcular as larguras baseadas na posição do mouse
+    const leftWidth = (1 - currentMouseX) * 100;
+    const rightWidth = currentMouseX * 100;
+
+    // Aplicar as larguras com limites mínimos e máximos
+    const minWidth = 15;
+    const maxWidth = 85;
+
+    const finalLeftWidth = Math.max(minWidth, Math.min(maxWidth, leftWidth));
+    const finalRightWidth = Math.max(minWidth, Math.min(maxWidth, rightWidth));
+
+    // Aplicar as transformações
+    splitLeft.style.width = `${finalLeftWidth}%`;
+    splitRight.style.width = `${finalRightWidth}%`;
+
+    // Efeito de cobertura: adicionar z-index para o lado ativo
+    if (currentMouseX < 0.5) {
+      splitLeft.classList.add("active");
+      splitRight.classList.remove("active");
+    } else {
+      splitRight.classList.add("active");
+      splitLeft.classList.remove("active");
+    }
+
+    // Continuar a animação se ainda há diferença significativa
+    if (Math.abs(currentMouseX - targetMouseX) > 0.001) {
+      animationId = requestAnimationFrame(animateTransition);
+    } else {
+      animationId = null;
+    }
+  }
+
+  // Função para iniciar a animação suave
+  function startSmoothAnimation() {
+    if (!animationId) {
+      animationId = requestAnimationFrame(animateTransition);
+    }
+  }
+
+  // Event listener para movimento do mouse (desktop)
+  function handleMouseMove(e) {
+    if (!isDesktop) return;
+
+    const rect = splitContainer.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const containerWidth = rect.width;
+
+    // Normalizar a posição do mouse (0 a 1)
+    targetMouseX = Math.max(0, Math.min(1, mouseX / containerWidth));
+
+    // Iniciar animação suave
+    startSmoothAnimation();
+  }
+
+  // Event listener para quando o mouse sai do container
+  function handleMouseLeave() {
+    if (!isDesktop) return;
+
+    // Retornar ao estado inicial (50/50)
+    targetMouseX = 0.5;
+    startSmoothAnimation();
+
+    // Remover classes de ativo
+    setTimeout(() => {
+      splitLeft.classList.remove("active");
+      splitRight.classList.remove("active");
+    }, 800);
+  }
+
   // Função para ativar o lado esquerdo (mobile)
   function activateLeft() {
-    heroSection.classList.remove("right-active");
-    heroSection.classList.add("left-active");
+    if (isDesktop) return;
+
+    splitContainer.classList.remove("right-active");
+    splitContainer.classList.add("left-active");
     resetMobileTimeout();
   }
 
   // Função para ativar o lado direito (mobile)
   function activateRight() {
-    heroSection.classList.remove("left-active");
-    heroSection.classList.add("right-active");
+    if (isDesktop) return;
+
+    splitContainer.classList.remove("left-active");
+    splitContainer.classList.add("right-active");
     resetMobileTimeout();
   }
 
   // Função para resetar o estado (mobile)
   function resetState() {
-    heroSection.classList.remove("left-active", "right-active");
+    splitContainer.classList.remove("left-active", "right-active");
   }
 
   // Reset timeout para mobile
+  let mobileTimeout;
   function resetMobileTimeout() {
     clearTimeout(mobileTimeout);
     mobileTimeout = setTimeout(resetState, 3000);
@@ -418,172 +380,114 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Event listeners para mobile (toque)
   function addMobileListeners() {
-    heroLeft.addEventListener("click", activateLeft);
-    heroRight.addEventListener("click", activateRight);
-
-    // Touch events para melhor experiência mobile
-    heroLeft.addEventListener("touchstart", activateLeft);
-    heroRight.addEventListener("touchstart", activateRight);
+    splitLeft.addEventListener("click", activateLeft);
+    splitRight.addEventListener("click", activateRight);
+    splitLeft.addEventListener("touchstart", activateLeft);
+    splitRight.addEventListener("touchstart", activateRight);
   }
 
   // Remover todos os listeners
   function removeAllListeners() {
-    heroLeft.removeEventListener("click", activateLeft);
-    heroRight.removeEventListener("click", activateRight);
-    heroLeft.removeEventListener("touchstart", activateLeft);
-    heroRight.removeEventListener("touchstart", activateRight);
+    splitContainer.removeEventListener("mousemove", handleMouseMove);
+    splitContainer.removeEventListener("mouseleave", handleMouseLeave);
+    splitLeft.removeEventListener("click", activateLeft);
+    splitRight.removeEventListener("click", activateRight);
+    splitLeft.removeEventListener("touchstart", activateLeft);
+    splitRight.removeEventListener("touchstart", activateRight);
   }
 
-  // Efeitos adicionais para desktop
-  function addDesktopEffects() {
-    const heroHalves = [heroLeft, heroRight];
+  // Função para adicionar efeitos de desktop
+  function addDesktopListeners() {
+    splitContainer.addEventListener("mousemove", handleMouseMove);
+    splitContainer.addEventListener("mouseleave", handleMouseLeave);
 
-    heroHalves.forEach((half) => {
-      // Efeito de movimento do mouse
-      half.addEventListener("mousemove", function (e) {
-        const rect = this.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+    // Inicializar posição do mouse no centro
+    currentMouseX = 0.5;
+    targetMouseX = 0.5;
 
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = (y - centerY) / 50;
-        const rotateY = (centerX - x) / 50;
-
-        const content = this.querySelector(".hero-content-new");
-        if (content) {
-          content.style.transform = `translate(-50%, -50%) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        }
-      });
-
-      half.addEventListener("mouseleave", function () {
-        const content = this.querySelector(".hero-content-new");
-        if (content) {
-          content.style.transform =
-            "translate(-50%, -50%) perspective(1000px) rotateX(0deg) rotateY(0deg)";
-        }
-      });
-    });
+    // Resetar larguras para o estado inicial
+    splitLeft.style.width = "50%";
+    splitRight.style.width = "50%";
   }
 
   // Inicializar baseado no dispositivo
-  function initializeHero() {
+  function initializeSplitScreen() {
     removeAllListeners();
     checkDevice();
 
     if (isDesktop) {
-      addDesktopEffects();
+      addDesktopListeners();
       resetState(); // Remove classes mobile se existirem
     } else {
       addMobileListeners();
+      // Resetar larguras para mobile
+      splitLeft.style.width = "";
+      splitRight.style.width = "";
     }
   }
 
   // Inicializar
-  initializeHero();
+  initializeSplitScreen();
 
   // Reinicializar quando a janela for redimensionada
   let resizeTimeout;
   window.addEventListener("resize", function () {
     clearTimeout(resizeTimeout);
     clearTimeout(mobileTimeout);
+
     resizeTimeout = setTimeout(function () {
       resetState();
-      initializeHero();
+
+      // Cancelar animação em andamento
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+
+      // Remover classes de ativo
+      splitLeft.classList.remove("active");
+      splitRight.classList.remove("active");
+
+      initializeSplitScreen();
     }, 250);
   });
 
-  // Efeito de parallax no scroll (opcional e sutil)
-  let ticking = false;
-  function updateParallax() {
-    const scrolled = window.pageYOffset;
-
-    if (scrolled < window.innerHeight) {
-      const rate = scrolled * 0.3;
-      heroLeft.style.transform = `translateY(${rate}px)`;
-      heroRight.style.transform = `translateY(${rate}px)`;
-    }
-
-    ticking = false;
-  }
-
-  function requestParallaxTick() {
-    if (!ticking && isDesktop) {
-      requestAnimationFrame(updateParallax);
-      ticking = true;
-    }
-  }
-
-  window.addEventListener("scroll", requestParallaxTick);
-
   // Animação de entrada suave
   setTimeout(function () {
-    heroSection.style.opacity = "1";
-    heroSection.classList.add("loaded");
+    const heroSplit = document.querySelector(".hero-split");
+    if (heroSplit) {
+      heroSplit.style.opacity = "1";
+      heroSplit.classList.add("loaded");
+    }
   }, 100);
 
-  // Preloader para as imagens
-  function preloadImages() {
-    const images = [
-      "../assets/images/designer-image.jpg",
-      "../assets/images/developer-image.jpg",
-    ];
-
-    let loadedImages = 0;
-    const totalImages = images.length;
-
-    images.forEach(function (src) {
-      const img = new Image();
-      img.onload = function () {
-        loadedImages++;
-        if (loadedImages === totalImages) {
-          heroSection.classList.add("images-loaded");
-        }
-      };
-      img.src = src;
-    });
-  }
-
-  // Iniciar preload
-  preloadImages();
-
   // Debug info
-  console.log("Hero Split Screen initialized successfully!");
+  console.log("Hero Split Screen Interactive initialized successfully!");
   console.log("Device type:", isDesktop ? "Desktop" : "Mobile");
 });
 
-// Função para adicionar CSS dinâmico (caso necessário)
-function addDynamicStyles() {
-  const style = document.createElement("style");
-  style.textContent = `
-    .hero-new {
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    
-    .hero-new.loaded {
-      opacity: 1;
-    }
-    
-    .hero-new.images-loaded .hero-half {
-      background-size: cover;
-    }
-    
-    /* Smooth transitions para todos os estados */
-    .hero-half,
-    .hero-content-new,
-    .hero-title-new,
-    .hero-description-new {
-      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-  `;
-  document.head.appendChild(style);
+// Performance optimization: Throttle scroll events
+let ticking = false;
+
+function updateScrollEffects() {
+  const header = document.getElementById("header");
+
+  // Header scroll effect
+  if (window.scrollY > 100) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+
+  ticking = false;
 }
 
-// Adicionar estilos dinâmicos quando o DOM estiver pronto
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", addDynamicStyles);
-} else {
-  addDynamicStyles();
+function requestTick() {
+  if (!ticking) {
+    requestAnimationFrame(updateScrollEffects);
+    ticking = true;
+  }
 }
+
+// Replace the existing scroll event listeners with throttled version
+window.addEventListener("scroll", requestTick, { passive: true });
