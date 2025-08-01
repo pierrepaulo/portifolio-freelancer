@@ -142,191 +142,94 @@ body {
 .hamburger.active .hamburger-line:nth-child(3) {
   transform: rotate(-45deg) translate(6px, -6px);
 }
+/*
+  Hero Section - Frases e Foto
+  A nova seção hero exibe apenas as frases com efeito de digitação ao lado de
+  uma foto. A estrutura utiliza flexbox para alinhar verticalmente o texto e
+  a imagem de forma responsiva e centralizada. */
 
-/* Hero Section - Split Screen Interactive */
-.hero-split {
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
+.hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  /* Espaçamento interno maior no topo e base para criar respiro visual.
+     O valor superior compensa o cabeçalho fixo para evitar que o conteúdo
+     fique escondido atrás dele. */
+  padding: 80px 0;
+  /* Garante que a área do hero ocupe boa parte da tela, deixando o
+     conteúdo centralizado verticalmente no viewport. Ajuste conforme
+     necessário para balancear com o restante da página. */
+  min-height: 60vh;
 
-.split-container {
+  /* Usa flexbox para centralizar verticalmente o conteúdo interno (.hero-container).
+     A direção padrão (column) é suficiente pois há apenas um filho direto. */
   display: flex;
-  height: 100%;
-  position: relative;
+  align-items: center;
 }
 
-.split-side {
-  position: absolute;
-  top: 0;
-  width: 50%;
-  height: 100%;
+.hero-container {
+  /* Utiliza flexbox para alinhar o texto e a foto horizontalmente.
+     O `flex-wrap` garante que em telas menores os elementos quebrem para
+     a linha seguinte de forma elegante. */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* Centraliza as colunas horizontalmente e distribui o espaço de forma equilibrada */
+  justify-content: center;
+  gap: 4rem;
+  /* Centraliza verticalmente o container dentro da seção hero usando
+     margens automáticas no eixo vertical. Isso posiciona o conteúdo
+     no centro, independentemente da altura da área disponível. */
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* Texto do hero (frases com efeito de digitação) */
+.typing-text {
+  font-family: "Playfair Display", serif;
+  color: var(--color-primary);
+  font-size: 2.5rem;
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: 1px;
+  /* Permite quebras de linha conforme definidas nas frases do JS */
+  white-space: pre-line;
+  /* Limita a largura máxima para melhor equilíbrio visual sem forçar ocupação
+     completa do espaço disponível. */
+  max-width: 600px;
+}
+
+/* Ajustes para a foto no hero */
+.hero-photo {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  /* Remove a flexibilidade para que a foto ocupe apenas seu tamanho natural */
+}
+
+/* Colunas do hero: centraliza conteúdo e define proporções */
+.hero-left,
+.hero-right {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-size: 100% 100%; /* Garante que a imagem não mude de tamanho */
-  background-repeat: no-repeat;
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: pointer;
-  overflow: hidden;
 }
 
-.split-left {
-  left: 0;
-  background-image: linear-gradient(
-      135deg,
-      rgba(0, 191, 255, 0.8) 0%,
-      rgba(0, 191, 255, 0.4) 100%
-    ),
-    url("../assets/images/designer-image.jpg");
-  background-position: right center; /* Mostra a metade direita da imagem esquerda */
-  background-color: #1a1a2e;
-}
-
-.split-right {
-  right: 0;
-  background-image: linear-gradient(
-      135deg,
-      rgba(255, 215, 0, 0.8) 0%,
-      rgba(255, 215, 0, 0.4) 100%
-    ),
-    url("../assets/images/developer-image.jpg");
-  background-position: left center; /* Mostra a metade esquerda da imagem direita */
-  background-color: #2e1a1a;
-}
-
-/* Overlay para melhor contraste */
-.split-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  transition: all 0.8s ease;
-  z-index: 1;
-}
-
-/* Conteúdo do split */
-.split-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 2rem;
-  margin: 0 5%; /* Margem lateral para centralizar com o resto do site */
-  transform: translateY(0);
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.split-title {
-  font-family: "Playfair Display", serif;
-  font-size: 4rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-  transition: all 0.8s ease;
-}
-
-.split-left .split-title {
-  color: #00bfff;
-}
-
-.split-right .split-title {
-  color: #ffd700;
-}
-
-.split-description {
-  font-size: 1.3rem;
-  font-weight: 300;
-  color: #ffffff;
-  max-width: 400px;
-  margin: 0 auto;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
-  opacity: 0.9;
-  transition: all 0.8s ease;
-}
-
-/* Efeito de cobertura: a imagem ativa se sobrepõe à outra */
-.split-side.active {
-  z-index: 10; /* Garante que a imagem ativa fique por cima */
-}
-
-/* Linha divisória central */
-.split-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(255, 255, 255, 0.3) 20%,
-    rgba(255, 255, 255, 0.3) 80%,
-    transparent
-  );
-  transform: translateX(-50%);
-  z-index: 3;
-  transition: opacity 0.8s ease;
-}
-
-.split-container:hover::after {
-  opacity: 0;
-}
-
-/* Efeito de brilho nas bordas */
-.split-side::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-  z-index: 2;
-}
-
-.split-left::before {
-  right: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(0, 191, 255, 0.6) 30%,
-    rgba(0, 191, 255, 0.6) 70%,
-    transparent
-  );
-}
-
-.split-right::before {
-  left: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgba(255, 215, 0, 0.6) 30%,
-    rgba(255, 215, 0, 0.6) 70%,
-    transparent
-  );
-}
-
-.split-side:hover::before {
-  opacity: 1;
-}
-
-/* Animação de entrada */
-@keyframes fadeInSplit {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+@media (max-width: 768px) {
+  .hero-container {
+    flex-direction: column-reverse;
+    gap: 2rem;
+    /* Remove a altura mínima em dispositivos móveis para se ajustar ao conteúdo */
+    min-height: auto;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
+  .typing-text {
+    /* Ajuste da fonte para telas menores */
+    font-size: 1.5rem;
+    text-align: center;
   }
-}
-
-.hero-split {
-  animation: fadeInSplit 1.2s ease-out;
+  .hero-photo {
+    max-width: 300px;
+  }
 }
 
 /* Sections */

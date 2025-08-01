@@ -25,10 +25,11 @@
     <header class="header" id="header">
       <div class="container">
         <div class="logo">
-          <a href="#hero-split"
+          <!-- Atualiza a âncora da logo para a nova seção hero e adiciona texto alternativo -->
+          <a href="#hero"
             ><img
               src="assets/images/pierre-logo-removebg-preview-removebg-preview.png"
-              alt=""
+              alt="Logotipo Pierre Paulo"
           /></a>
         </div>
         <nav class="nav" id="nav">
@@ -49,29 +50,22 @@
       </div>
     </header>
 
-    <!-- Hero Section - Split Screen Interactive -->
-    <section class="hero-split" id="hero-split">
-      <div class="split-container">
-        <!-- Lado Esquerdo - Designer -->
-        <div class="split-side split-left" data-bg="designer">
-          <div class="split-content">
-            <h1 class="split-title">Designer</h1>
-            <p class="split-description">
-              Transformo ideias em soluções digitais criativas e funcionais.
-            </p>
+    <!-- Hero Section - Frases com efeito de digitação e Foto -->
+    <section class="hero" id="hero">
+      <div class="hero-container container">
+        <!-- Lado esquerdo: texto com efeito de digitação -->
+        <div class="hero-left">
+          <div class="typing-text">
+            <span id="typing-text"></span>
           </div>
-          <div class="split-overlay"></div>
         </div>
-
-        <!-- Lado Direito - Developer -->
-        <div class="split-side split-right" data-bg="developer">
-          <div class="split-content">
-            <h1 class="split-title">Developer</h1>
-            <p class="split-description">
-              Construo aplicações robustas e eficientes com código limpo.
-            </p>
-          </div>
-          <div class="split-overlay"></div>
+        <!-- Lado direito: foto pessoal -->
+        <div class="hero-right">
+          <img
+            src="assets/images/cyber.png"
+            alt="Foto de Pierre Paulo"
+            class="hero-photo"
+          />
         </div>
       </div>
     </section>

@@ -248,222 +248,51 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Portfolio Pierre Paulo - JavaScript loaded successfully!");
 });
 
-// ===== HERO SPLIT SCREEN INTERACTIVE EFFECT =====
+// ===== HERO NOTEBOOK TYPING EFFECT =====
+// Este script cria um efeito de digitação suave para alternar entre
+// duas frases na nova seção de hero.
 document.addEventListener("DOMContentLoaded", function () {
-  const splitContainer = document.querySelector(".split-container");
-  const splitLeft = document.querySelector(".split-left");
-  const splitRight = document.querySelector(".split-right");
+  const typingElement = document.getElementById("typing-text");
+  if (!typingElement) return;
 
-  if (!splitContainer || !splitLeft || !splitRight) {
-    console.warn("Split screen elements not found");
-    return;
-  }
+  const phrases = [
+    "Developer: “Código limpo e escalável para soluções robustas e duradouras.”",
+    "Designer: “Transformo ideias em experiências digitais que encantam e convertem.”",
+  ];
+  let phraseIndex = 0;
+  let charIndex = 0;
+  const typingSpeed = 80;
+  const erasingSpeed = 50;
+  const delayBetweenPhrases = 2000;
 
-  let isDesktop = window.innerWidth > 768;
-  let currentMouseX = 0;
-  let targetMouseX = 0;
-  let animationId = null;
-
-  // Função para detectar se é desktop
-  function checkDevice() {
-    isDesktop = window.innerWidth > 768;
-  }
-
-  // Função de interpolação suave (lerp)
-  function lerp(start, end, factor) {
-    return start + (end - start) * factor;
-  }
-
-  // Função para animar as transições suavemente
-  function animateTransition() {
-    // Interpolação suave para o movimento do mouse
-    currentMouseX = lerp(currentMouseX, targetMouseX, 0.08);
-
-    // Calcular as larguras baseadas na posição do mouse
-    const leftWidth = (1 - currentMouseX) * 100;
-    const rightWidth = currentMouseX * 100;
-
-    // Aplicar as larguras com limites mínimos e máximos
-    const minWidth = 15;
-    const maxWidth = 85;
-
-    const finalLeftWidth = Math.max(minWidth, Math.min(maxWidth, leftWidth));
-    const finalRightWidth = Math.max(minWidth, Math.min(maxWidth, rightWidth));
-
-    // Aplicar as transformações
-    splitLeft.style.width = `${finalLeftWidth}%`;
-    splitRight.style.width = `${finalRightWidth}%`;
-
-    // Efeito de cobertura: adicionar z-index para o lado ativo
-    if (currentMouseX < 0.5) {
-      splitLeft.classList.add("active");
-      splitRight.classList.remove("active");
+  function type() {
+    if (charIndex < phrases[phraseIndex].length) {
+      typingElement.textContent += phrases[phraseIndex].charAt(charIndex);
+      charIndex++;
+      setTimeout(type, typingSpeed);
     } else {
-      splitRight.classList.add("active");
-      splitLeft.classList.remove("active");
+      // Espera um pouco e inicia o apagar
+      setTimeout(erase, delayBetweenPhrases);
     }
+  }
 
-    // Continuar a animação se ainda há diferença significativa
-    if (Math.abs(currentMouseX - targetMouseX) > 0.001) {
-      animationId = requestAnimationFrame(animateTransition);
+  function erase() {
+    if (charIndex > 0) {
+      typingElement.textContent = phrases[phraseIndex].substring(
+        0,
+        charIndex - 1
+      );
+      charIndex--;
+      setTimeout(erase, erasingSpeed);
     } else {
-      animationId = null;
+      // Move para a próxima frase e reinicia a digitação
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      setTimeout(type, typingSpeed);
     }
   }
 
-  // Função para iniciar a animação suave
-  function startSmoothAnimation() {
-    if (!animationId) {
-      animationId = requestAnimationFrame(animateTransition);
-    }
-  }
-
-  // Event listener para movimento do mouse (desktop)
-  function handleMouseMove(e) {
-    if (!isDesktop) return;
-
-    const rect = splitContainer.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const containerWidth = rect.width;
-
-    // Normalizar a posição do mouse (0 a 1)
-    targetMouseX = Math.max(0, Math.min(1, mouseX / containerWidth));
-
-    // Iniciar animação suave
-    startSmoothAnimation();
-  }
-
-  // Event listener para quando o mouse sai do container
-  function handleMouseLeave() {
-    if (!isDesktop) return;
-
-    // Retornar ao estado inicial (50/50)
-    targetMouseX = 0.5;
-    startSmoothAnimation();
-
-    // Remover classes de ativo
-    setTimeout(() => {
-      splitLeft.classList.remove("active");
-      splitRight.classList.remove("active");
-    }, 800);
-  }
-
-  // Função para ativar o lado esquerdo (mobile)
-  function activateLeft() {
-    if (isDesktop) return;
-
-    splitContainer.classList.remove("right-active");
-    splitContainer.classList.add("left-active");
-    resetMobileTimeout();
-  }
-
-  // Função para ativar o lado direito (mobile)
-  function activateRight() {
-    if (isDesktop) return;
-
-    splitContainer.classList.remove("left-active");
-    splitContainer.classList.add("right-active");
-    resetMobileTimeout();
-  }
-
-  // Função para resetar o estado (mobile)
-  function resetState() {
-    splitContainer.classList.remove("left-active", "right-active");
-  }
-
-  // Reset timeout para mobile
-  let mobileTimeout;
-  function resetMobileTimeout() {
-    clearTimeout(mobileTimeout);
-    mobileTimeout = setTimeout(resetState, 3000);
-  }
-
-  // Event listeners para mobile (toque)
-  function addMobileListeners() {
-    splitLeft.addEventListener("click", activateLeft);
-    splitRight.addEventListener("click", activateRight);
-    splitLeft.addEventListener("touchstart", activateLeft);
-    splitRight.addEventListener("touchstart", activateRight);
-  }
-
-  // Remover todos os listeners
-  function removeAllListeners() {
-    splitContainer.removeEventListener("mousemove", handleMouseMove);
-    splitContainer.removeEventListener("mouseleave", handleMouseLeave);
-    splitLeft.removeEventListener("click", activateLeft);
-    splitRight.removeEventListener("click", activateRight);
-    splitLeft.removeEventListener("touchstart", activateLeft);
-    splitRight.removeEventListener("touchstart", activateRight);
-  }
-
-  // Função para adicionar efeitos de desktop
-  function addDesktopListeners() {
-    splitContainer.addEventListener("mousemove", handleMouseMove);
-    splitContainer.addEventListener("mouseleave", handleMouseLeave);
-
-    // Inicializar posição do mouse no centro
-    currentMouseX = 0.5;
-    targetMouseX = 0.5;
-
-    // Resetar larguras para o estado inicial
-    splitLeft.style.width = "50%";
-    splitRight.style.width = "50%";
-  }
-
-  // Inicializar baseado no dispositivo
-  function initializeSplitScreen() {
-    removeAllListeners();
-    checkDevice();
-
-    if (isDesktop) {
-      addDesktopListeners();
-      resetState(); // Remove classes mobile se existirem
-    } else {
-      addMobileListeners();
-      // Resetar larguras para mobile
-      splitLeft.style.width = "";
-      splitRight.style.width = "";
-    }
-  }
-
-  // Inicializar
-  initializeSplitScreen();
-
-  // Reinicializar quando a janela for redimensionada
-  let resizeTimeout;
-  window.addEventListener("resize", function () {
-    clearTimeout(resizeTimeout);
-    clearTimeout(mobileTimeout);
-
-    resizeTimeout = setTimeout(function () {
-      resetState();
-
-      // Cancelar animação em andamento
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-      }
-
-      // Remover classes de ativo
-      splitLeft.classList.remove("active");
-      splitRight.classList.remove("active");
-
-      initializeSplitScreen();
-    }, 250);
-  });
-
-  // Animação de entrada suave
-  setTimeout(function () {
-    const heroSplit = document.querySelector(".hero-split");
-    if (heroSplit) {
-      heroSplit.style.opacity = "1";
-      heroSplit.classList.add("loaded");
-    }
-  }, 100);
-
-  // Debug info
-  console.log("Hero Split Screen Interactive initialized successfully!");
-  console.log("Device type:", isDesktop ? "Desktop" : "Mobile");
+  // Inicia o efeito de digitação
+  type();
 });
 
 // Performance optimization: Throttle scroll events
