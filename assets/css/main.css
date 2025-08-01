@@ -4,7 +4,6 @@
   --color-secondary: #ffd700;
   --color-text: #f0f0f0;
   --color-bg: #1a1a1a;
-  /* novas variáveis para cores reutilizadas */
   --color-grey: #cccccc;
   --color-light-grey: #e0e0e0;
   --color-dark-grey: #888888;
@@ -25,7 +24,6 @@ html {
 body {
   font-family: "Roboto", sans-serif;
   line-height: 1.6;
-  /* usa as variáveis globais para cores de texto e fundo */
   color: var(--color-text);
   background-color: var(--color-bg);
   overflow-x: hidden;
@@ -105,7 +103,11 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   transition: width 0.3s ease;
 }
 
@@ -401,11 +403,15 @@ section {
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  grid-auto-rows: 1fr;
 }
 
 .service-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   text-align: center;
   padding: 2.5rem 1.5rem;
   background: rgba(255, 255, 255, 0.05);
@@ -495,7 +501,11 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 15px;
-  background: linear-gradient(45deg, var(--color-whatsapp-1), var(--color-whatsapp-2));
+  background: linear-gradient(
+    45deg,
+    var(--color-whatsapp-1),
+    var(--color-whatsapp-2)
+  );
   color: white;
   padding: 18px 35px;
   border-radius: 50px;
@@ -661,6 +671,10 @@ section {
   .service-card {
     padding: 1.5rem;
   }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Scroll animations */
@@ -674,4 +688,3 @@ section {
   opacity: 1;
   transform: translateY(0);
 }
-
