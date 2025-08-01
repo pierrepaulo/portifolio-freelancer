@@ -4,6 +4,12 @@
   --color-secondary: #ffd700;
   --color-text: #f0f0f0;
   --color-bg: #1a1a1a;
+  /* novas variáveis para cores reutilizadas */
+  --color-grey: #cccccc;
+  --color-light-grey: #e0e0e0;
+  --color-dark-grey: #888888;
+  --color-whatsapp-1: #25d366;
+  --color-whatsapp-2: #128c7e;
 }
 
 * {
@@ -19,8 +25,9 @@ html {
 body {
   font-family: "Roboto", sans-serif;
   line-height: 1.6;
-  color: #f0f0f0;
-  background-color: #1a1a1a;
+  /* usa as variáveis globais para cores de texto e fundo */
+  color: var(--color-text);
+  background-color: var(--color-bg);
   overflow-x: hidden;
 }
 
@@ -66,13 +73,13 @@ body {
   font-family: "Playfair Display", serif;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #00bfff;
+  color: var(--color-primary);
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .logo a:hover {
-  color: #ffd700;
+  color: var(--color-secondary);
   transform: scale(1.05);
 }
 
@@ -83,7 +90,7 @@ body {
 }
 
 .nav-link {
-  color: #f0f0f0;
+  color: var(--color-text);
   text-decoration: none;
   font-weight: 400;
   position: relative;
@@ -98,12 +105,12 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #00bfff, #ffd700);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
   transition: width 0.3s ease;
 }
 
 .nav-link:hover {
-  color: #00bfff;
+  color: var(--color-primary);
 }
 
 .nav-link:hover::after {
@@ -126,7 +133,7 @@ body {
 .hamburger-line {
   width: 100%;
   height: 3px;
-  background: #00bfff;
+  background: var(--color-primary);
   transition: all 0.3s ease;
   transform-origin: center;
 }
@@ -229,7 +236,7 @@ section {
 
 .section-subtitle {
   font-size: 1.2rem;
-  color: #cccccc;
+  color: var(--color-grey);
   max-width: 600px;
   margin: 0 auto;
 }
@@ -250,7 +257,7 @@ section {
   font-size: 1.1rem;
   line-height: 1.8;
   margin-bottom: 1.5rem;
-  color: #e0e0e0;
+  color: var(--color-light-grey);
 }
 
 .about-skills {
@@ -278,19 +285,19 @@ section {
 
 .skill-item i {
   font-size: 2.5rem;
-  color: #00bfff;
+  color: var(--color-primary);
   margin-bottom: 1rem;
   transition: all 0.3s ease;
 }
 
 .skill-item:hover i {
-  color: #ffd700;
+  color: var(--color-secondary);
   transform: scale(1.1);
 }
 
 .skill-item span {
   font-weight: 500;
-  color: #f0f0f0;
+  color: var(--color-text);
 }
 
 /* Projects Section */
@@ -343,30 +350,30 @@ section {
 
 .project-image i {
   font-size: 3rem;
-  color: #00bfff;
+  color: var(--color-primary);
   transition: all 0.3s ease;
 }
 
 .project-card:hover .project-image i {
-  color: #ffd700;
+  color: var(--color-secondary);
   transform: scale(1.1);
 }
 
 .project-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #f0f0f0;
+  color: var(--color-text);
   margin-bottom: 1rem;
 }
 
 .project-description {
-  color: #cccccc;
+  color: var(--color-grey);
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
 
 .project-link {
-  color: #00bfff;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
@@ -380,7 +387,7 @@ section {
 }
 
 .project-link:hover {
-  color: #ffd700;
+  color: var(--color-secondary);
 }
 
 .project-link:hover::after {
@@ -442,26 +449,26 @@ section {
 
 .service-icon i {
   font-size: 3rem;
-  color: #00bfff;
+  color: var(--color-primary);
   transition: all 0.3s ease;
 }
 
 .service-card:hover .service-icon i {
-  color: #ffd700;
+  color: var(--color-secondary);
   transform: scale(1.1);
 }
 
 .service-title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #f0f0f0;
+  color: var(--color-text);
   margin-bottom: 1rem;
   position: relative;
   z-index: 2;
 }
 
 .service-description {
-  color: #cccccc;
+  color: var(--color-grey);
   line-height: 1.6;
   position: relative;
   z-index: 2;
@@ -480,7 +487,7 @@ section {
 
 .contact-info p {
   font-size: 1.2rem;
-  color: #e0e0e0;
+  color: var(--color-light-grey);
   line-height: 1.8;
 }
 
@@ -488,7 +495,7 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 15px;
-  background: linear-gradient(45deg, #25d366, #128c7e);
+  background: linear-gradient(45deg, var(--color-whatsapp-1), var(--color-whatsapp-2));
   color: white;
   padding: 18px 35px;
   border-radius: 50px;
@@ -523,7 +530,7 @@ section {
 }
 
 .contact-message {
-  color: #cccccc;
+  color: var(--color-grey);
   font-style: italic;
 }
 
@@ -540,7 +547,7 @@ section {
 }
 
 .footer-text {
-  color: #888888;
+  color: var(--color-dark-grey);
 }
 
 .social-links {
@@ -555,7 +562,7 @@ section {
   width: 45px;
   height: 45px;
   background: rgba(255, 255, 255, 0.05);
-  color: #cccccc;
+  color: var(--color-grey);
   border-radius: 50%;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -564,7 +571,7 @@ section {
 
 .social-link:hover {
   background: rgba(0, 191, 255, 0.1);
-  color: #00bfff;
+  color: var(--color-primary);
   transform: translateY(-3px);
   border-color: rgba(0, 191, 255, 0.3);
 }
@@ -668,24 +675,3 @@ section {
   transform: translateY(0);
 }
 
-.slide-left {
-  opacity: 0;
-  transform: translateX(-50px);
-  transition: all 0.6s ease;
-}
-
-.slide-left.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.slide-right {
-  opacity: 0;
-  transform: translateX(50px);
-  transition: all 0.6s ease;
-}
-
-.slide-right.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
