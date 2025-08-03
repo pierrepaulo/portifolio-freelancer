@@ -24,14 +24,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Header scroll effect
-  window.addEventListener("scroll", function () {
-    if (window.scrollY > 100) {
-      header.classList.add("scrolled");
-    } else {
-      header.classList.remove("scrolled");
-    }
-  });
+  /*
+   * Header scroll effect
+   *
+   * The original implementation added another scroll listener here to toggle
+   * the `.scrolled` class on the header. Later in this file a throttled
+   * version of the same behaviour is registered. Having two listeners
+   * performing the exact same work results in duplicate operations on each
+   * scroll event and can impact performance on mobile devices.  The
+   * throttled implementation defined at the bottom of this file is now the
+   * single source of truth for updating the header state.
+   */
+  // Note: the actual scroll listener is defined later (see requestTick()).
 
   // Smooth scrolling for navigation links
   navLinks.forEach((link) => {
