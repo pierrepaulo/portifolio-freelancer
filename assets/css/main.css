@@ -22,7 +22,8 @@ html {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "SF Pro Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
   color: var(--color-text);
   background-color: var(--color-bg);
@@ -68,7 +69,6 @@ body {
 }
 
 .logo a {
-  font-family: "Playfair Display", serif;
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--color-primary);
@@ -176,7 +176,6 @@ body {
 
 /* Texto do hero (frases com efeito de digitação) */
 .typing-text {
-  font-family: "Playfair Display", serif;
   color: var(--color-primary);
   font-size: 2.5rem;
   line-height: 1.4;
@@ -229,7 +228,6 @@ section {
 }
 
 .section-title {
-  font-family: "Playfair Display", serif;
   font-size: 3rem;
   font-weight: 700;
   color: var(--color-primary);
