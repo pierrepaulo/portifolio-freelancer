@@ -41,30 +41,76 @@
             <li><a href="#contact" class="nav-link">Contato</a></li>
           </ul>
         </nav>
-        <button class="hamburger" id="hamburger" aria-label="Menu">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
+        <div class="header-actions">
+          <button class="search-icon" aria-label="Buscar">
+            <i class="fas fa-search"></i>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+        </div>
       </div>
     </header>
 
-    <!-- Hero Section - Frases com efeito de digitação e Foto -->
+    <!-- Hero Section -->
     <section class="hero" id="hero">
+      <!-- Linha vertical neon -->
+      <div class="hero-vertical-line">
+        <div class="vertical-line"></div>
+        <div class="vertical-arrow">↓</div>
+      </div>
+
       <div class="hero-container container">
-        <!-- Lado esquerdo: texto com efeito de digitação -->
+        <!-- Lado esquerdo: textos e botão -->
         <div class="hero-left">
-          <div class="typing-text">
-            <span id="typing-text"></span>
+          <div class="hero-content">
+            <h1 class="hero-main-text">
+              <span class="highlight">Desenvolvedor Web Profissional.</span
+              ><br />
+              Criação de Sites Modernos, Bonitos e que Vendem
+            </h1>
+
+            <div class="hero-roles">
+              <div class="role-item">
+                <h2 class="role-title">DEVELOPER</h2>
+                <p class="role-description">
+                  Código limpo e escalável para soluções robustas e duradouras.
+                </p>
+              </div>
+
+              <div class="role-item">
+                <h2 class="role-title">DESIGNER</h2>
+                <p class="role-description">
+                  Transformo ideias em experiências digitais que encantam e
+                  convertem.
+                </p>
+              </div>
+            </div>
+
+            <div class="hero-buttons">
+              <button class="hero-btn hero-btn-primary">
+                <span class="btn-text">Solicitar Orçamento</span>
+                <div class="btn-glow"></div>
+              </button>
+              <button class="hero-btn hero-btn-secondary">
+                <span class="btn-text">Vantagens dos meus serviços</span>
+                <div class="btn-glow"></div>
+              </button>
+            </div>
           </div>
         </div>
+
         <!-- Lado direito: foto pessoal -->
         <div class="hero-right">
-          <img
-            src="assets/images/cyber.png"
-            alt="Foto de Pierre Paulo"
-            class="hero-photo"
-          />
+          <div class="hero-image-container">
+            <img
+              src="assets/images/cyber.png"
+              alt="Foto de Pierre Paulo"
+              class="hero-photo"
+            />
+          </div>
         </div>
       </div>
     </section>

@@ -5,8 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const nav = document.getElementById("nav");
   const navLinks = document.querySelectorAll(".nav-link");
   const header = document.getElementById("header");
+  const searchIcon = document.querySelector(".search-icon");
 
-  // Mobile Menu Toggle
+  // Alternar menu móvel
   hamburger.addEventListener("click", function () {
     // alterna estado do menu
     const isActive = hamburger.classList.toggle("active");
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     hamburger.setAttribute("aria-expanded", isActive);
   });
 
-  // Close mobile menu when clicking on nav links
+  // Fecha o menu móvel ao clicar nos links de navegação
   navLinks.forEach((link) => {
     link.addEventListener("click", function () {
       hamburger.classList.remove("active");
@@ -24,20 +25,108 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  /*
-   * Header scroll effect
-   *
-   * The original implementation added another scroll listener here to toggle
-   * the `.scrolled` class on the header. Later in this file a throttled
-   * version of the same behaviour is registered. Having two listeners
-   * performing the exact same work results in duplicate operations on each
-   * scroll event and can impact performance on mobile devices.  The
-   * throttled implementation defined at the bottom of this file is now the
-   * single source of truth for updating the header state.
-   */
-  // Note: the actual scroll listener is defined later (see requestTick()).
+  // Funcionalidade do ícone de pesquisa
+  if (searchIcon) {
+    searchIcon.addEventListener("click", function () {
+      // Funcionalidade de espaço reservado - pode ser expandida posteriormente
+      console.log("Search clicked");
+      this.style.transform = "scale(0.9)";
+      setTimeout(() => {
+        this.style.transform = "scale(1)";
+      }, 150);
+    });
+  }
 
-  // Smooth scrolling for navigation links
+  // Novos botões da hero section
+  const heroBtnPrimary = document.querySelector(".hero-btn-primary");
+  const heroBtnSecondary = document.querySelector(".hero-btn-secondary");
+
+  // Função para adicionar efeito de ondulação
+  function addRippleEffect(button) {
+    button.addEventListener("click", function (e) {
+      // Remove classe anterior se existir
+      this.classList.remove("clicked");
+
+      // Força reflow para garantir que a animação seja reiniciada
+      void this.offsetWidth;
+
+      // Adiciona a classe de clique
+      this.classList.add("clicked");
+
+      // Remove a classe após a animação
+      setTimeout(() => {
+        this.classList.remove("clicked");
+      }, 600);
+    });
+  }
+
+  // Botão Primário - Solicitar Orçamento
+  if (heroBtnPrimary) {
+    addRippleEffect(heroBtnPrimary);
+
+    heroBtnPrimary.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Scroll para a seção de contato
+      const contactSection = document.querySelector("#contact");
+      if (contactSection) {
+        const headerHeight = header.offsetHeight;
+        const targetPosition = contactSection.offsetTop - headerHeight;
+
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth",
+        });
+      }
+
+      // Log para tracking
+      console.log("Botão 'Solicitar Orçamento' clicado");
+    });
+
+    // Efeitos de hover
+    heroBtnPrimary.addEventListener("mouseenter", function () {
+      this.style.transform = "translateY(-4px) scale(1.03)";
+    });
+
+    heroBtnPrimary.addEventListener("mouseleave", function () {
+      this.style.transform = "translateY(0) scale(1)";
+    });
+  }
+
+  // Botão Secundário - Vantagens dos serviços
+  if (heroBtnSecondary) {
+    addRippleEffect(heroBtnSecondary);
+
+    heroBtnSecondary.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Scroll para a seção de serviços
+      const servicesSection = document.querySelector("#services");
+      if (servicesSection) {
+        const headerHeight = header.offsetHeight;
+        const targetPosition = servicesSection.offsetTop - headerHeight;
+
+        window.scrollTo({
+          top: targetPosition,
+          behavior: "smooth",
+        });
+      }
+
+      // Log para tracking
+      console.log("Botão 'Vantagens dos meus serviços' clicado");
+    });
+
+    // Efeitos de hover
+    heroBtnSecondary.addEventListener("mouseenter", function () {
+      this.style.transform = "translateY(-4px) scale(1.03)";
+    });
+
+    heroBtnSecondary.addEventListener("mouseleave", function () {
+      this.style.transform = "translateY(0) scale(1)";
+    });
+  }
+
+  // Rolagem suave para links de navegação
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
       e.preventDefault();
@@ -56,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Scroll animations
+  // Animação de scroll
   const observerOptions = {
     threshold: 0.1,
     rootMargin: "0px 0px -50px 0px",
@@ -70,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }, observerOptions);
 
-  // Add animation classes and observe elements
+  // Add classes de animação e observar elementos
   const animateElements = document.querySelectorAll(
     ".section-header, .project-card, .service-card, .about-text, .about-skills"
   );
@@ -102,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
     observer.observe(card);
   });
 
-  // Active navigation link highlighting
+  // Destaque de link de navegação ativo
   window.addEventListener("scroll", function () {
     const sections = document.querySelectorAll("section[id]");
     const scrollPos = window.scrollY + header.offsetHeight + 50;
@@ -157,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Smooth reveal animation for sections
+  // Animação de revelação suave para seções
   const revealElements = document.querySelectorAll(
     ".about-content, .contact-content"
   );
@@ -166,13 +255,14 @@ document.addEventListener("DOMContentLoaded", function () {
     element.classList.add("fade-in");
   });
 
-  // WhatsApp button pulse animation
+  // Animação de pulso do botão WhatsApp
   const whatsappBtn = document.querySelector(".whatsapp-btn");
   if (whatsappBtn) {
     setInterval(() => {
       whatsappBtn.style.animation = "none";
       setTimeout(() => {
-        whatsappBtn.style.animation = "pulse 0.6s ease-in-out";
+        // Reinicie a animação da escala de pulso para criar um efeito de pulso
+        whatsappBtn.style.animation = "pulse-scale 0.6s ease-in-out";
       }, 10);
     }, 5000);
   }
@@ -219,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.body.appendChild(scrollToTopBtn);
 
-  // Show/hide scroll to top button
+  // Mostrar/ocultar botão de rolagem para o topo
   window.addEventListener("scroll", function () {
     if (window.scrollY > 500) {
       scrollToTopBtn.style.opacity = "1";
@@ -230,7 +320,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Scroll to top functionality
+  // Role até a funcionalidade superior
   scrollToTopBtn.addEventListener("click", function () {
     window.scrollTo({
       top: 0,
@@ -249,88 +339,11 @@ document.addEventListener("DOMContentLoaded", function () {
     this.style.boxShadow = "0 5px 15px rgba(0, 191, 255, 0.3)";
   });
 
-  console.log("Portfolio Pierre Paulo - JavaScript loaded successfully!");
-});
-
-// ===== HERO NOTEBOOK TYPING EFFECT =====
-// Este script cria um efeito de digitação suave para alternar entre
-// duas frases na nova seção de hero.
-document.addEventListener("DOMContentLoaded", function () {
-  const typingElement = document.getElementById("typing-text");
-  if (!typingElement) return;
-
-  const phrases = [
-    "Developer: “Código limpo e escalável para soluções robustas e duradouras.”",
-    "Designer: “Transformo ideias em experiências digitais que encantam e convertem.”",
-  ];
-  let phraseIndex = 0;
-  let charIndex = 0;
-  const typingSpeed = 80;
-  const erasingSpeed = 50;
-  const delayBetweenPhrases = 2000;
-
-  function type() {
-    if (charIndex < phrases[phraseIndex].length) {
-      typingElement.textContent += phrases[phraseIndex].charAt(charIndex);
-      charIndex++;
-      setTimeout(type, typingSpeed);
-    } else {
-      // Espera um pouco e inicia o apagar
-      setTimeout(erase, delayBetweenPhrases);
-    }
-  }
-
-  function erase() {
-    if (charIndex > 0) {
-      typingElement.textContent = phrases[phraseIndex].substring(
-        0,
-        charIndex - 1
-      );
-      charIndex--;
-      setTimeout(erase, erasingSpeed);
-    } else {
-      // Move para a próxima frase e reinicia a digitação
-      phraseIndex = (phraseIndex + 1) % phrases.length;
-      setTimeout(type, typingSpeed);
-    }
-  }
-
-  // Inicia o efeito de digitação
-  type();
-});
-
-// Performance optimization: Throttle scroll events
-let ticking = false;
-
-function updateScrollEffects() {
-  const header = document.getElementById("header");
-
-  // Header scroll effect
-  if (window.scrollY > 100) {
-    header.classList.add("scrolled");
-  } else {
-    header.classList.remove("scrolled");
-  }
-
-  ticking = false;
-}
-
-function requestTick() {
-  if (!ticking) {
-    requestAnimationFrame(updateScrollEffects);
-    ticking = true;
-  }
-}
-
-// Replace the existing scroll event listeners with throttled version
-window.addEventListener("scroll", requestTick, { passive: true });
-
-// Service buttons functionality
-document.addEventListener("DOMContentLoaded", function () {
+  // -----------------------------------------------------------------------------
+  // Funcionalidade dos botões de serviço (mesclados do segundo DOMContentLoaded)
+  // Esses manipuladores fornecem efeitos de foco, clique e toque com feedback em cascata.
   const serviceButtons = document.querySelectorAll(".service-btn");
-
   serviceButtons.forEach((button, index) => {
-    // Add staggered animation delay
     button.style.transitionDelay = `${index * 0.1}s`;
 
     // Enhanced hover effects
@@ -382,7 +395,6 @@ document.addEventListener("DOMContentLoaded", function () {
         this.style.transform = "translateY(0) scale(1)";
       }, 150);
 
-      // You can add actual functionality here
       console.log(`Service button ${index + 1} clicked: Saiba mais`);
     });
 
@@ -396,20 +408,47 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Add CSS for ripple animation
-  const style = document.createElement("style");
-  style.textContent = `
+  // Add CSS para animação ripple uma vez
+  const rippleStyle = document.createElement("style");
+  rippleStyle.textContent = `
     @keyframes ripple {
       to {
         transform: scale(2);
         opacity: 0;
       }
     }
-    
+
     .service-btn {
       position: relative;
       overflow: hidden;
     }
   `;
-  document.head.appendChild(style);
+  document.head.appendChild(rippleStyle);
+
+  console.log("Portfolio Pierre Paulo - JavaScript loaded successfully!");
 });
+
+// Otimização de desempenho: Acelerar eventos de rolagem
+let ticking = false;
+
+function updateScrollEffects() {
+  const header = document.getElementById("header");
+
+  if (window.scrollY > 100) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+
+  ticking = false;
+}
+
+function requestTick() {
+  if (!ticking) {
+    requestAnimationFrame(updateScrollEffects);
+    ticking = true;
+  }
+}
+
+// Substituir os ouvintes de eventos de rolagem existentes pela versão limitada
+window.addEventListener("scroll", requestTick, { passive: true });
