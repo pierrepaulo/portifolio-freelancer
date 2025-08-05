@@ -61,37 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Botão Primário - Solicitar Orçamento
-  if (heroBtnPrimary) {
-    addRippleEffect(heroBtnPrimary);
-
-    heroBtnPrimary.addEventListener("click", function (e) {
-      e.preventDefault();
-
-      // Scroll para a seção de contato
-      const contactSection = document.querySelector("#contact");
-      if (contactSection) {
-        const headerHeight = header.offsetHeight;
-        const targetPosition = contactSection.offsetTop - headerHeight;
-
-        window.scrollTo({
-          top: targetPosition,
-          behavior: "smooth",
-        });
-      }
-
-      // Log para tracking
-      console.log("Botão 'Solicitar Orçamento' clicado");
-    });
-
-    // Efeitos de hover
-    heroBtnPrimary.addEventListener("mouseenter", function () {
-      this.style.transform = "translateY(-4px) scale(1.03)";
-    });
-
-    heroBtnPrimary.addEventListener("mouseleave", function () {
-      this.style.transform = "translateY(0) scale(1)";
-    });
-  }
 
   // Botão Secundário - Vantagens dos serviços
   if (heroBtnSecondary) {

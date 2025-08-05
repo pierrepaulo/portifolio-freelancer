@@ -983,7 +983,7 @@ section {
   }
 
   .about-skills {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .skill-item {
@@ -996,6 +996,9 @@ section {
   }
 
   .services-grid {
+    grid-template-columns: 1fr;
+  }
+  .projects-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1014,6 +1017,8 @@ section {
 
 /* Service Button Styles */
 .service-btn {
+  display: inline-block;
+  width: auto;
   margin-top: auto;
   padding: 12px 24px;
   background: linear-gradient(
